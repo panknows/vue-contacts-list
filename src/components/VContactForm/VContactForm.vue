@@ -1,15 +1,16 @@
 <template>
   <b-form @submit.prevent="onSubmit">
-    {{ form }}
-    <b-form-group label="Name:" label-for="name">
-      <b-form-input
-        id="name"
-        v-model="form.name"
-        placeholder="Enter name"
-        required
-      />
-    </b-form-group>
     <div>
+      <b-form-group label="Name:" label-for="name">
+        <b-form-input
+          id="name"
+          v-model="form.name"
+          placeholder="Enter name"
+          required
+        />
+      </b-form-group>
+    </div>
+    <div class="border-bottom mb-2 border-primary">
       <b-form-group
         v-for="(item, i) in form.phones"
         :key="i"
@@ -24,14 +25,16 @@
         />
         <b-button
           v-if="form.phones.length > 1 && (i + 1) !== form.phones.length"
-          variant="danger"
+          variant="outline-danger"
+          size="sm"
+          class="mt-2"
           @click="removeField(item)"
         >
-          remove field
+          <BIconX /> Remove field
         </b-button>
       </b-form-group>
     </div>
-    <div>
+    <div class="border-bottom mb-2 border-primary">
       <b-form-group
         v-for="(item, i) in form.emails"
         :key="i"
@@ -47,10 +50,12 @@
         />
         <b-button
           v-if="form.emails.length > 1 && (i + 1) !== form.emails.length"
-          variant="danger"
+          variant="outline-danger"
+          size="sm"
+          class="mt-2"
           @click="removeField(item)"
         >
-          remove field
+          <BIconX /> Remove field
         </b-button>
       </b-form-group>
     </div>
@@ -69,18 +74,24 @@
         />
         <b-button
           v-if="form.addresses.length > 1 && (i + 1) !== form.addresses.length"
-          variant="danger"
+          variant="outline-danger"
+          size="sm"
+          class="mt-2"
           @click="removeField(item)"
         >
-          remove field
+          <BIconX /> Remove field
         </b-button>
       </b-form-group>
     </div>
-    <b-button type="submit" variant="primary">Create</b-button>
+    <slot name="footer">
+      <b-button type="submit" variant="primary">Submit</b-button>
+    </slot>
   </b-form>
 </template>
 
 <script>
+import { BIconX } from 'bootstrap-vue';
+
 import { getField, TYPES } from '@/shared/field';
 
 const initialForm = {
@@ -92,6 +103,9 @@ const initialForm = {
 
 export default {
   name: 'VContactForm',
+  components: {
+    BIconX,
+  },
   props: {
     initialValues: {
       type: Object,
@@ -112,7 +126,6 @@ export default {
     },
     reset() {
       this.form = { ...initialForm };
-      this.initFields();
     },
     addField(fields) {
       const field = getField(fields);
@@ -132,9 +145,9 @@ export default {
       }
     },
     initFields() {
-      const phoneField = getField([], TYPES.phone);
-      const emailField = getField([], TYPES.email);
-      const addressField = getField([], TYPES.address);
+      const phoneField = getField(this.form.phones || [], TYPES.phone);
+      const emailField = getField(this.form.emails || [], TYPES.email);
+      const addressField = getField(this.form.addresses || [], TYPES.address);
 
       this.form.phones = [...this.form.phones, { ...phoneField }];
       this.form.addresses = [...this.form.addresses, { ...addressField }];

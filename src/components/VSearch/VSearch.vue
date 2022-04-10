@@ -1,17 +1,36 @@
 <template>
   <div>
-    <b-form-input v-model="request" placeholder="Enter your name" />
-    <template v-if="isActive">
-      Searching results: «{{ request }}» <br />
-      found: {{ value.length }}
-      <b-button @click="clear">clear</b-button>
-    </template>
+    <b-form-input
+      v-model="request"
+      placeholder="Search by name"
+      type="search"
+      debounce="200"
+      size="lg"
+    />
+    <div v-if="isActive" class="mt-2">
+      <div>
+        <h5>
+          Searching results: «{{ request }}»
+        </h5>
+      </div>
+      <div class="mt-2 d-flex align-items-center">
+        Found: {{ value.length }}
+        <b-button pill variant="outline-danger" size="sm" class="ml-2" @click="clear">
+          <BIconX />
+        </b-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { BIconX } from 'bootstrap-vue';
+
 export default {
   name: 'VSearch',
+  components: {
+    BIconX,
+  },
   props: {
     value: {
       type: Array,
