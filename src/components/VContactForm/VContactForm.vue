@@ -5,6 +5,7 @@
         <b-form-input
           id="name"
           v-model="form.name"
+          autofocus
           placeholder="Enter name"
           required
         />
