@@ -1,9 +1,10 @@
 <template>
-  <router-view />
+  <div>Contacts list</div>
 </template>
 
 <script>
+
 export default {
-  name: 'IndexView',
+  name: 'ContactsView',
 };
 </script>
